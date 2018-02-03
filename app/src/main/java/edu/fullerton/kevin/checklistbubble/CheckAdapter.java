@@ -32,9 +32,18 @@ public class CheckAdapter extends BaseAdapter{
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        CheckLayout checkLayout = null;
+        CheckList list = checkList.get(i);
 
+        if(view == null){
+            checkLayout = new CheckLayout(context, list);
+        }
+        else{
+            checkLayout = (CheckLayout) view;
+            checkLayout.setList(list);
+        }
 
-        return context.v;
+        return checkLayout;
     }
 
     @Override

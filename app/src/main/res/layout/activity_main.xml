@@ -6,13 +6,10 @@
     android:layout_height="match_parent"
     tools:context="edu.fullerton.kevin.checklistbubble.MainActivity">
 
-    <android.support.v4.view.ViewPager
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:id="@+id/checkPager">
-    </android.support.v4.view.ViewPager>
+        android:layout_height="wrap_content"
+        android:id="@+id/list_view"></ListView>
 
     <Button
         android:id="@+id/notify_me"

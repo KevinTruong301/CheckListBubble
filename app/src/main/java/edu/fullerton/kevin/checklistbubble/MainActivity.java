@@ -1,22 +1,33 @@
 package edu.fullerton.kevin.checklistbubble;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
+    private CheckListDB db;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        db = new CheckListDB(this);
+
+        listView = (ListView) findViewById(R.id.list_view);
 
         //Check if the application has draw over other apps permission or not?
         //This permission is by default available for API<23. But for API > 23
@@ -34,7 +45,29 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        refreshMovieList();
 
+    }
+
+    public void refreshMovieList(){
+        Context context = getApplicationContext();
+        CheckListDB db = new CheckListDB(context);
+        ArrayList<CheckList> list = db.getNames();
+
+        CheckAdapter adapter = new CheckAdapter(context, list);
+        listView.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.names_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        db.insertName("waaaat");
+        return super.onOptionsItemSelected(item);
     }
 
     /**

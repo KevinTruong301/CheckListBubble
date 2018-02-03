@@ -5,24 +5,35 @@ package edu.fullerton.kevin.checklistbubble;
  */
 
 public class CheckList {
+    private int id;
     private String name;
     private String item;
 
-    public CheckList(String name, String item) {
+    public CheckList(int id, String name) {
+        this.id = id;
         this.name = name;
-        this.item = item;
+    }
+
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getItem() {
-        return item;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getItem() {
+        return item;
     }
 
     public void setItem(String item) {
