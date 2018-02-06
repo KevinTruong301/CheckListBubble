@@ -1,15 +1,20 @@
 package edu.fullerton.kevin.checklistbubble;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -44,12 +49,20 @@ public class MainActivity extends AppCompatActivity {
             initializeView();
         }
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent checkListIntent = new Intent(MainActivity.this, EditCheckList.class);
 
-        refreshMovieList();
+                }
+            }
+        );
+
+        refreshCheckList();
 
     }
 
-    public void refreshMovieList(){
+    public void refreshCheckList(){
         Context context = getApplicationContext();
         CheckListDB db = new CheckListDB(context);
         ArrayList<CheckList> list = db.getNames();
@@ -66,8 +79,41 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        db.insertName("waaaat");
+        switch(item.toString()){
+            case "add": showAddDialog();
+                        break;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+
+
+    public void showAddDialog(){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.add_dialog, null);
+        dialogBuilder.setView(dialogView);
+
+        final EditText addEditDialog = (EditText) dialogView.findViewById(R.id.addEditDialog);
+
+        dialogBuilder.setTitle("New Checklist");
+        dialogBuilder.setMessage("Enter Checklist Title");
+        dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                db.insertName(addEditDialog.getText().toString());
+            }
+        });
+
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //Do Nothing
+            }
+        });
+
+        AlertDialog b = dialogBuilder.create();
+        b.show();
     }
 
     /**
