@@ -149,16 +149,34 @@ public class CheckListDB {
         return lists;
     }
 
-    public void insertName(String w){
-        /*String insert = "INSERT INTO " + CHECK_NAMES_TABLE + " (" + CHECK_NAMES_NAME + ") VALUES " + name;
-        db.execSQL(insert);*/
-
+    public void insertName(String name){
         ContentValues cv = new ContentValues();
-        cv.put(CHECK_NAMES_NAME, w);
+        cv.put(CHECK_NAMES_NAME, name);
         this.openWriteableDb();
         db.insert(CHECK_NAMES_TABLE, null, cv);
         this.closeDb();
     }
 
+    public void insertList(String item){
+        ContentValues cv = new ContentValues();
+        cv.put(CHECK_LIST_ITEM, item);
+        openWriteableDb();
+        db.insert(CHECK_LIST_TABLE,null, cv);
+        closeDb();
+    }
+
+    public void deleteName(int id){
+        String where = "id = " + id;
+        openWriteableDb();
+        db.delete(CHECK_NAMES_TABLE, where, null);
+        closeDb();
+    }
+
+    public void deleteListItem(int id){
+        String where = "id = " + id;
+        openWriteableDb();
+        db.delete(CHECK_LIST_TABLE, where, null);
+        closeDb();
+    }
 
 }

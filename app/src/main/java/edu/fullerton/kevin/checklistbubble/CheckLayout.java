@@ -36,6 +36,8 @@ public class CheckLayout extends RelativeLayout{
         addButton = (Button) findViewById(R.id.add);
         deleteButton = (Button) findViewById(R.id.delete);
 
+        deleteButton.setOnClickListener();
+
         setList(c);
     }
 

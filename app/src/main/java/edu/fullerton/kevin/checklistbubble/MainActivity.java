@@ -101,7 +101,9 @@ public class MainActivity extends AppCompatActivity {
         dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                db.insertName(addEditDialog.getText().toString());
+                Intent checkListIntent = new Intent(MainActivity.this, EditCheckList.class);
+                checkListIntent.putExtra("name", addEditDialog.getText().toString());
+                startActivity(checkListIntent);
             }
         });
 

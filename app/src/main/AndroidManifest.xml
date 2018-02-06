@@ -19,6 +19,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".EditCheckList"></activity>
+
         <service
             android:name=".FloatingViewService"
             android:enabled="true"
