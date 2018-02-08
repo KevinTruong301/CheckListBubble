@@ -9,7 +9,7 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/list_view"></ListView>
+        android:id="@+id/list_view_names"></ListView>
 
     <Button
         android:id="@+id/notify_me"

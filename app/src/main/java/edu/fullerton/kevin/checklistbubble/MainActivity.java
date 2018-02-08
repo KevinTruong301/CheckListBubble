@@ -14,10 +14,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -25,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     private CheckListDB db;
     private ListView listView;
+    private Button delete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         db = new CheckListDB(this);
 
-        listView = (ListView) findViewById(R.id.list_view);
-
+        listView = (ListView) findViewById(R.id.list_view_names);
         //Check if the application has draw over other apps permission or not?
         //This permission is by default available for API<23. But for API > 23
         //you have to ask for the permission in runtime.
@@ -58,8 +61,17 @@ public class MainActivity extends AppCompatActivity {
             }
         );
 
+
+
         refreshCheckList();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        refreshCheckList();
     }
 
     public void refreshCheckList(){
@@ -81,11 +93,20 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.toString()){
             case "add": showAddDialog();
+                        //delete();
                         break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    public void delete(){
+        ArrayList<CheckList> list = db.getNames();
+        CheckList check = list.get(0);
+        int id = check.getId();
+
+        db.deleteName(id);
+        refreshCheckList();
+    }
 
 
     public void showAddDialog(){
@@ -102,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Intent checkListIntent = new Intent(MainActivity.this, EditCheckList.class);
+                db.insertName(addEditDialog.getText().toString());
                 checkListIntent.putExtra("name", addEditDialog.getText().toString());
                 startActivity(checkListIntent);
             }
