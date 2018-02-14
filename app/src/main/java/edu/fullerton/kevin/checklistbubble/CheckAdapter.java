@@ -1,12 +1,10 @@
 package edu.fullerton.kevin.checklistbubble;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -19,7 +17,7 @@ public class CheckAdapter extends BaseAdapter{
     private ArrayList<CheckList> checkList;
     private Button deleteButton;
     private CheckListDB checkListDB;
-    private int position;
+    private int checkPosition;
 
     public CheckAdapter(Context context, ArrayList<CheckList> checkList) {
         this.context = context;
@@ -41,7 +39,7 @@ public class CheckAdapter extends BaseAdapter{
         CheckLayout checkLayout = null;
         CheckList list = checkList.get(position);
         final int listID = list.getId();
-        this.position = position;
+        checkPosition = position;
 
         checkListDB = new CheckListDB(context);
 
@@ -55,6 +53,8 @@ public class CheckAdapter extends BaseAdapter{
         }
 
         deleteButton = (Button) checkLayout.findViewById(R.id.delete);
+        deleteButton.setTag(position);
+        deleteButton.setTag(200);
 
         deleteButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -62,15 +62,16 @@ public class CheckAdapter extends BaseAdapter{
             public void onClick(View view) {
 
                 checkListDB.deleteName(listID);
-                updateData();
+                int itemPosition = Integer.parseInt(view.getTag().toString());
+                updateData(itemPosition);
             }
         });
 
         return checkLayout;
     }
 
-    public void updateData(){
-        checkList.remove(position);
+    public void updateData(int itemPosition){
+        checkList.remove(itemPosition);
         this.notifyDataSetChanged();
     }
 
