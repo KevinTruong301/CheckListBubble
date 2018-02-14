@@ -14,13 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -29,12 +27,15 @@ public class MainActivity extends AppCompatActivity {
     private CheckListDB db;
     private ListView listView;
     private Button delete;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = new CheckListDB(this);
+
+        context = this;
 
         listView = (ListView) findViewById(R.id.list_view_names);
         //Check if the application has draw over other apps permission or not?
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                         //delete();
                         break;
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     public void delete(){
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         final View dialogView = inflater.inflate(R.layout.add_dialog, null);
         dialogBuilder.setView(dialogView);
 
-        final EditText addEditDialog = (EditText) dialogView.findViewById(R.id.addEditDialog);
+        final EditText addEditDialog = (EditText) dialogView.findViewById(R.id.add_edit_dialog);
 
         dialogBuilder.setTitle("New Checklist");
         dialogBuilder.setMessage("Enter Checklist Title");
@@ -123,9 +124,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 Intent checkListIntent = new Intent(MainActivity.this, EditCheckList.class);
-                db.insertName(addEditDialog.getText().toString());
+                long id = db.insertName(addEditDialog.getText().toString());
                 checkListIntent.putExtra("name", addEditDialog.getText().toString());
-                startActivity(checkListIntent);
+                checkListIntent.putExtra("checkListId", id);
+                context.startActivity(checkListIntent);
             }
         });
 

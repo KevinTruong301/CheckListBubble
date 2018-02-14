@@ -14,6 +14,12 @@ public class CheckList {
         this.name = name;
     }
 
+    public CheckList(int id, String item, String name){
+        this.id = id;
+        this.item = item;
+        this.name = name;
+    }
+
 
 
     public int getId() {

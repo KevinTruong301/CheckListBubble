@@ -54,7 +54,6 @@ public class CheckAdapter extends BaseAdapter{
 
         deleteButton = (Button) checkLayout.findViewById(R.id.delete);
         deleteButton.setTag(position);
-        deleteButton.setTag(200);
 
         deleteButton.setOnClickListener(new View.OnClickListener(){
             @Override

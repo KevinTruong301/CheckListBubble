@@ -6,5 +6,5 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/checkListView"></ListView>
+        android:id="@+id/check_list_view"></ListView>
 </RelativeLayout>

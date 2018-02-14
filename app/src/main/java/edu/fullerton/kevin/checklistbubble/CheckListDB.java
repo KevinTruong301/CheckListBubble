@@ -114,6 +114,21 @@ public class CheckListDB {
         }
     }
 
+    public CheckList getInfoFromCursorList(Cursor cursor){
+        try{
+            CheckList list = new CheckList(
+                    cursor.getInt(CHECK_NAMES_ID_COLUMN),
+                    cursor.getString(CHECK_LIST_ITEM_COLUMN)
+
+            );
+            return list;
+
+        }catch(Exception e){
+            return null;
+        }
+    }
+
+
     public ArrayList<CheckList> getNames(){
         openReadableDb();
 
@@ -133,36 +148,40 @@ public class CheckListDB {
     * */
 
     public ArrayList<CheckList> getList(int id){
-        String select = "CheckNames.NAME, CheckList.ITEM";
+/*        String select[] = {"CheckNames.NAME", "CheckList.ITEM"};
         String table = "CheckNames, CheckList";
-        String where = "CheckNames.ID = CheckList.NameId AND CheckNames.ID = " + id;
+        String where = "CheckNames.ID = CheckList.NameId AND CheckNames.ID = " + id;*/
         openReadableDb();
         ArrayList<CheckList> lists = new ArrayList<CheckList>();
+        Cursor cursor = db.query(CHECK_LIST_TABLE, null, null, null, null, null, null);
 
-        Cursor cursor = db.query(table,null, select, null, null, where, null, null);
+        //Cursor cursor = db.query(table, select, where, null, null, null, null, null);
 
         while(cursor.moveToNext()){
-            lists.add(getInfoFromCursorNames(cursor));
+            lists.add(getInfoFromCursorList(cursor));
         }
 
         closeDb();
         return lists;
     }
 
-    public void insertName(String name){
+    public long insertName(String name){
         ContentValues cv = new ContentValues();
         cv.put(CHECK_NAMES_NAME, name);
         this.openWriteableDb();
-        db.insert(CHECK_NAMES_TABLE, null, cv);
+        long id = db.insert(CHECK_NAMES_TABLE, null, cv);
         this.closeDb();
+        return id;
     }
 
-    public void insertList(String item){
+    public long insertList(String item, int checkListId){
         ContentValues cv = new ContentValues();
         cv.put(CHECK_LIST_ITEM, item);
+        cv.put(CHECK_LIST_NAME_ID, checkListId);
         openWriteableDb();
-        db.insert(CHECK_LIST_TABLE,null, cv);
+        long id = db.insert(CHECK_LIST_TABLE,null, cv);
         closeDb();
+        return id;
     }
 
     public void deleteName(int id){
